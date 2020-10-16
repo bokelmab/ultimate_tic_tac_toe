@@ -56,7 +56,7 @@ input_translation <- function(p_sub_games_row){
         field_last <- p_field
       }
       
-      field_last <- field_last + 1 ## conversion to python index
+      field_last <- field_last + 1 ## conversion to R index
       x.coord <- field_last %% 3
       if(x.coord == 0){
         x.coord <- 3
@@ -69,10 +69,26 @@ input_translation <- function(p_sub_games_row){
       
       ## adjust coordinates by number of sub game
       x.coord <- x.coord + (field_first %% 3)
-      y.coord <- y.coord + 2 - (field_first %/% 3)
+      y.coord <- y.coord + get('sub_games_row', input_translation_env) - 1 - (field_first %/% 3)
       
       
       return(c(x.coord, y.coord))
+    },
+    
+    boxes2coordinates = function(p_boxes){
+      
+      crosses <- NULL
+      circles <- NULL
+      for(i_box in 1:length(p_boxes)){
+        
+        if(p_boxes[i_box] == 1){ ## cross in box
+          crosses %<>% rbind(output$field2coordinate(i_box - 1)) ## python index
+        }
+        if(p_boxes[i_box] == 2){ ## circle in box
+          circles %<>% rbind(output$field2coordinate(i_box - 1)) ## python index
+        }
+      }
+      return(list(crosses = crosses, circles = circles))
     }
   )
   

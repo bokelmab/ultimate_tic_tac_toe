@@ -16,6 +16,7 @@ source('../wrapper_functions/wrapper_functions_game.R')
 source('../wrapper_functions/field_plot_class.R')
 source('../ai_objects/ki_rl.R')
 source('../game_implementation/game.R')
+source('../wrapper_functions/input_translation_class.R')
 
 ## create ruediger
 use_python('C:/Users/Bjoern/anaconda3/python.exe', required = T)
@@ -27,7 +28,9 @@ myenv = environment()
 circles <- NULL ## coordinates of circles
 crosses <- NULL ## coordinates of crosses
 number_training_games <- 1000
-field_representation <- field_representation(1)
+games_per_row <- 1
+field_representation <- field_representation(games_per_row)
+input_translation <- input_translation(games_per_row)
 
 chosen.symbole <- 'empty'
 
@@ -43,10 +46,8 @@ shinyServer(function(input, output, session) {
         
         field.number <- get_ai_move(game, ai_player)
         make_move_on_game(field.number, 'cross')
-        crosses %<>% rbind(field2coordinate(field.number))
-        assign('crosses', crosses, server.env)
-        
-        get('field_representation', myenv)$add_symbols(crosses, circles)
+        symbole_coordinates <- input_translation$boxes2coordinates(game$boxes)
+        get('field_representation', myenv)$add_symbols(symbole_coordinates$crosses, symbole_coordinates$circles)
         get('field_representation', myenv)$plot_field()
       })
     }
@@ -75,16 +76,17 @@ shinyServer(function(input, output, session) {
         
         ### add new coordinates --------------------------------------------
         mouse <- input$plot_click
-        mouse.x <- translate.coordinates(mouse$x) ## mid point of chosen box
-        mouse.y <- translate.coordinates(mouse$y) ## mid point of chosen box
+        mouse_x <- input_translation$translate_coordinates(mouse$x)
+        mouse_y <- input_translation$translate_coordinates(mouse$y)
+        field.number <- input_translation$coordinate2field(mouse_x, mouse_y)
         
         ## add new symbole to game
-        make_move_on_game(coordinate2field(mouse.x, mouse.y), chosen.symbole)
+        make_move_on_game(field.number, chosen.symbole)
         if(chosen.symbole == 'cross'){
-          crosses %<>% rbind(c(mouse.x, mouse.y)) ## add mouse coordinates to cross coordinates
+          crosses %<>% rbind(c(mouse_x, mouse_y)) ## add mouse coordinates to cross coordinates
         }
         if(chosen.symbole == 'circle'){
-          circles %<>% rbind(c(mouse.x, mouse.y)) ## add mouse coordinates to circle coordinates
+          circles %<>% rbind(c(mouse_x, mouse_y)) ## add mouse coordinates to circle coordinates
         }
       }
       
@@ -95,9 +97,9 @@ shinyServer(function(input, output, session) {
         field.number <- get_ai_move(game, ai_player)
         make_move_on_game(field.number, ifelse(chosen.symbole == 'circle', 'cross', 'circle'))
         if(chosen.symbole == 'circle'){
-          crosses %<>% rbind(field2coordinate(field.number))
+          crosses %<>% rbind(input_translation$field2coordinate(field.number))
         }else{
-          circles %<>% rbind(field2coordinate(field.number))
+          circles %<>% rbind(input_translation$field2coordinate(field.number))
         }
         
         ## check whether circle has won
@@ -116,7 +118,8 @@ shinyServer(function(input, output, session) {
     
     ## plot board with symbols ------------------------------------------------
     output$board <- renderPlot({
-      get('field_representation', myenv)$add_symbols(crosses, circles)
+      symbole_coordinates <- input_translation$boxes2coordinates(game$boxes)
+      get('field_representation', myenv)$add_symbols(symbole_coordinates$crosses, symbole_coordinates$circles)
       get('field_representation', myenv)$plot_field()
     })
     

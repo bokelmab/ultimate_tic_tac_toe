@@ -22,6 +22,7 @@ class ultimate_tic_tac_toe(tic_tac_toe):
         self.next_sub_game = -1 ## any sub game is allowed at first
         
     def move(self, p_box_tuple, p_symbole):
+  
         if(self.finished):
             return
         else:

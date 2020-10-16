@@ -24,13 +24,21 @@ Created on Thu Aug 20 13:59:48 2020
 
 from Reinforcement_learner_class import *
 from random_player_class import *
+from ultimate_player import *
 
 def get_ai_move(p_game, p_ai):
   field_number = p_ai.make_move(p_game.boxes, p_game, p_exploit = True)
   return field_number
+  
+def get_ultimate_ai_move(p_game, p_ai):
+  field_number = p_ai.make_move(p_game)
+  return field_number
 
 def make_move_on_game(p_field_number, p_symbole):
   game.move(int(p_field_number), str(p_symbole))
+  
+def make_move_on_ultimate_game(p_field_number1, p_field_number2, p_symbole):
+  game.move((int(p_field_number1),int(p_field_number2)), str(p_symbole))
   
 def train_ai(p_symbole, p_number_games):
   
@@ -72,6 +80,47 @@ def train_ai(p_symbole, p_number_games):
     return player_cross
   else:
     return player_circle
+    
+def train_ultimate_ai(p_symbole, p_number_games):
+  
+  print('Start training of ai player')
+  p_number_games = int(p_number_games)
+  
+  ## Creation of player objects depending on choice of symbole
+  if(p_symbole == 'cross'):
+    player_cross = reinforcement_learner('player_cross', 'cross')
+    player_circle = random_player()
+  else:
+    player_circle = reinforcement_learner('player_circle', 'circle')
+    player_cross = random_player()
+    
+  ## training
+  for i_game in range(1, p_number_games + 1):
+    
+    game = simple_tic_tac_toe() ## define game
+    while game.finished == False:
+        game.move(player_cross.make_move(game.boxes, game), 'cross')
+        
+        if(game.finished == False):
+            game.move(player_circle.make_move(game.boxes, game), 'circle')
+    
+    if(game.winner == 'cross'):
+        player_cross.update_value_function(1)
+        player_circle.update_value_function(0)
+    if(game.winner == 'circle'):
+        player_cross.update_value_function(0)
+        player_circle.update_value_function(1)
+    if(game.winner == 'tie'):
+        player_cross.update_value_function(1/2)
+        player_circle.update_value_function(1/2)
+  
+        
+  ## output
+  print('Finished training ai player. Let us begin!' )
+  if(p_symbole == 'cross'):
+    return ultimate_player('player_cross', player_cross)
+  else:
+    return ultimate_player('player_circle', player_circle)
     
 
   

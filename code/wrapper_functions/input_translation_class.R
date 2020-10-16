@@ -81,12 +81,24 @@ input_translation <- function(p_sub_games_row){
       circles <- NULL
       for(i_box in 1:length(p_boxes)){
         
-        if(p_boxes[i_box] == 1){ ## cross in box
-          crosses %<>% rbind(output$field2coordinate(i_box - 1)) ## python index
+        if(typeof(p_boxes[i_box]) %in% c('double', 'integer')){ ## simple tic tac toe
+          if(p_boxes[i_box] == 1){ ## cross in box
+            crosses %<>% rbind(output$field2coordinate(i_box - 1)) ## python index
+          }
+          if(p_boxes[i_box] == 2){ ## circle in box
+            circles %<>% rbind(output$field2coordinate(i_box - 1)) ## python index
+          }
+        }else{ ## ultimate tic tac toe
+          for(i_field in 1:length(p_boxes[[i_box]]$boxes)){
+            if(p_boxes[[i_box]]$boxes[i_field] == 1){ ## cross in box
+              crosses %<>% rbind(output$field2coordinate(c(i_box - 1, i_field - 1))) ## python index
+            }
+            if(p_boxes[[i_box]]$boxes[i_field] == 2){ ## circle in box
+              circles %<>% rbind(output$field2coordinate(c(i_box - 1, i_field - 1))) ## python index
+            }
+          }
         }
-        if(p_boxes[i_box] == 2){ ## circle in box
-          circles %<>% rbind(output$field2coordinate(i_box - 1)) ## python index
-        }
+        
       }
       return(list(crosses = crosses, circles = circles))
     }

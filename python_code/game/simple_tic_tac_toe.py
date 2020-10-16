@@ -15,6 +15,16 @@ class simple_tic_tac_toe(tic_tac_toe):
     def __init__(self):
         super().__init__()
         self.boxes = np.ones((9,), dtype=int) * 10
+        self.type = 'simple_game'
+        
+    def check_row(self, p_idx):
+        if((self.boxes[p_idx[0]]+self.boxes[p_idx[1]]+self.boxes[p_idx[2]])==3):
+                return 'cross'
+                print((self.boxes[p_idx[0]]+self.boxes[p_idx[1]]+self.boxes[p_idx[2]]))
+        if((self.boxes[p_idx[0]]+self.boxes[p_idx[1]]+self.boxes[p_idx[2]])==6):
+                return 'circle'
+        else:
+                return 'tie'
             
         
     # def move(self, p_box):
@@ -34,7 +44,10 @@ class simple_tic_tac_toe(tic_tac_toe):
     #             self.boxes[p_box] = 2
                 
     #     self.check_winner()
-        
+    def check_full(self):
+        if(len([b for b in self.boxes if b == 10]) == 0):
+            self.finished = True
+                      
     def move(self, p_box, p_symbole):
         if(self.finished):
             return
@@ -52,6 +65,7 @@ class simple_tic_tac_toe(tic_tac_toe):
                 self.boxes[p_box] = 2
                 
         self.check_winner()
+        self.check_full()
                 
             
     @staticmethod

@@ -20,6 +20,22 @@ class ultimate_tic_tac_toe(tic_tac_toe):
             boxes.append(simple_tic_tac_toe())
         self.boxes = boxes
         self.next_sub_game = -1 ## any sub game is allowed at first
+        self.type = 'ultimate_game'
+        
+    def check_row(self, p_idx):
+        if(self.boxes[p_idx[0]].winner == 'cross' and self.boxes[p_idx[1]].winner == 'cross' and self.boxes[p_idx[2]].winner == 'cross'):
+                return 'cross'
+        if(self.boxes[p_idx[0]].winner == 'circle' and self.boxes[p_idx[1]].winner == 'circle' and self.boxes[p_idx[2]].winner == 'circle'):
+                return 'circle'
+        else:
+                return 'tie'
+            
+    def check_full(self):
+        for i_sub_game in range(0,len(self.boxes)):
+            if(self.boxes[i_sub_game].finished == False):
+                return False
+        return True
+            
         
     def move(self, p_box_tuple, p_symbole):
   
@@ -41,7 +57,8 @@ class ultimate_tic_tac_toe(tic_tac_toe):
             self.next_sub_game = p_box_tuple[1]
             
                 
-        #self.check_winner()
+        self.check_winner()
+        self.check_full()
         
         
     def print_boxes(self):

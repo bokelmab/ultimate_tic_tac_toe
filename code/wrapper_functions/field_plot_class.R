@@ -37,8 +37,8 @@ field_representation <- function(p_sub_games_row){
       }
       
       ## draw symbols
-      points(get('crosses', field_representation_env), pch = 4, cex = 10, lwd = 5)
-      points(get('circles', field_representation_env), col = 'red', cex = 10, lwd = 5)
+      points(get('crosses', field_representation_env), pch = 4, cex = 10 / get('sub_games_row', field_representation_env), lwd = 5)
+      points(get('circles', field_representation_env), col = 'red', cex = 10 / get('sub_games_row', field_representation_env), lwd = 5)
       
     }
     

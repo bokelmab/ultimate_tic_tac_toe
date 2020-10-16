@@ -8,7 +8,7 @@ Created on Wed Aug 19 18:14:42 2020
 import numpy as np
 import copy
 
-class tic_tac_toe:
+class tic_tac_toe_old:
     
     score = np.array([0,0]) 
     

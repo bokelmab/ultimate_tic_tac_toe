@@ -45,16 +45,21 @@ class ultimate_tic_tac_toe(tic_tac_toe):
             
             #warning if unallowed move
             if(self.next_sub_game != -1 and p_box_tuple[0] != self.next_sub_game):
-                print('Unallowed move!')
-                return
+                if(self.boxes[self.next_sub_game].finished == False):
+                  print('Unallowed move!')
+                  self.unallowed_move = True
+                  return
+                
             
             if(self.boxes[p_box_tuple[0]].boxes[p_box_tuple[1]]!=10):
                 print('Unallowed move!')
+                self.unallowed_move = True
                 return
             
             #move
             self.boxes[p_box_tuple[0]].move(p_box_tuple[1], p_symbole)
             self.next_sub_game = p_box_tuple[1]
+            self.unallowed_move = False
             
                 
         self.check_winner()

@@ -23,6 +23,13 @@ class ultimate_player():
         idx_next_sub_game = p_game.next_sub_game
         if(idx_next_sub_game == -1):
             idx_next_sub_game = random.choice(range(0, 9))
+        else:
+            if(p_game.boxes[idx_next_sub_game].finished):
+                print('hehe')
+                idx_free = [idx for idx in range(0, len(p_game.boxes)) if p_game.boxes[idx].finished == False]
+                idx_next_sub_game = random.choice(idx_free)
+            
+            
         next_sub_game = p_game.boxes[idx_next_sub_game]
             
         field_number = self.simple_player.make_move(next_sub_game.boxes, next_sub_game)

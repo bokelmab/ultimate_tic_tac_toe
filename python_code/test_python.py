@@ -7,9 +7,9 @@ Created on Fri Oct  2 18:29:41 2020
 
 ## define path
 import sys
-sys.path.append('C:/R_Projects/tic_tac_toe_R_Python/python_code/game')
-sys.path.append('C:/R_Projects/tic_tac_toe_R_Python/python_code/player')
-sys.path.append('C:/R_Projects/tic_tac_toe_R_Python/python_code')
+sys.path.append('C:/R_Projects/ultimate_tic_tac_toe/python_code/game')
+sys.path.append('C:/R_Projects/ultimate_tic_tac_toe/python_code/player')
+sys.path.append('C:/R_Projects/ultimate_tic_tac_toe/python_code')
 
 ## required classes
 from simple_tic_tac_toe import * 

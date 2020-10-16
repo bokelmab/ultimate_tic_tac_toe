@@ -15,6 +15,7 @@ class tic_tac_toe:
     def __init__(self):
         self.winner = 'tie'
         self.finished = False
+        self.unallowed_move = False
         
     def check_row(self, p_idx):
         pass

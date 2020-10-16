@@ -86,8 +86,9 @@ shinyServer(function(input, output, session) {
       }
       
       ## check whether cross has won
-      if(!game$finished){
+      if(!game$finished & !game$unallowed_move){
         
+        print(game$unallowed_move)
         ## add new circle to field
         field.number <- get_ultimate_ai_move(game, ai_player)
         make_move_on_ultimate_game(field.number[[1]], field.number[[2]], ifelse(chosen.symbole == 'circle', 'cross', 'circle'))

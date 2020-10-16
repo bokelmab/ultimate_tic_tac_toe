@@ -56,6 +56,7 @@ class simple_tic_tac_toe(tic_tac_toe):
             #warning if unallowed move
             if(self.boxes[p_box]!=10):
                 print('Unallowed move!')
+                self.unallowed_move = True
                 return
             
             #move
@@ -63,7 +64,8 @@ class simple_tic_tac_toe(tic_tac_toe):
                 self.boxes[p_box] = 1
             else:
                 self.boxes[p_box] = 2
-                
+        
+        self.unallowed_move = False        
         self.check_winner()
         self.check_full()
                 

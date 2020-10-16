@@ -25,8 +25,6 @@ source_python("../../python_code/python_functions.py")
 
 ## environment
 myenv = environment()
-circles <- NULL ## coordinates of circles
-crosses <- NULL ## coordinates of crosses
 number_training_games <- 1000
 games_per_row <- 1
 field_representation <- field_representation(games_per_row)
@@ -82,12 +80,7 @@ shinyServer(function(input, output, session) {
         
         ## add new symbole to game
         make_move_on_game(field.number, chosen.symbole)
-        if(chosen.symbole == 'cross'){
-          crosses %<>% rbind(c(mouse_x, mouse_y)) ## add mouse coordinates to cross coordinates
-        }
-        if(chosen.symbole == 'circle'){
-          circles %<>% rbind(c(mouse_x, mouse_y)) ## add mouse coordinates to circle coordinates
-        }
+        
       }
       
       ## check whether cross has won
@@ -96,11 +89,6 @@ shinyServer(function(input, output, session) {
         ## add new circle to field
         field.number <- get_ai_move(game, ai_player)
         make_move_on_game(field.number, ifelse(chosen.symbole == 'circle', 'cross', 'circle'))
-        if(chosen.symbole == 'circle'){
-          crosses %<>% rbind(input_translation$field2coordinate(field.number))
-        }else{
-          circles %<>% rbind(input_translation$field2coordinate(field.number))
-        }
         
         ## check whether circle has won
         if(!game$winner %in% c('tie', chosen.symbole)){
@@ -111,9 +99,6 @@ shinyServer(function(input, output, session) {
           output$request <- renderText({'Congratulation, you won!'})
         }
       }
-      
-      assign('crosses', crosses, server.env)
-      assign('circles', circles, server.env)
     }
     
     ## plot board with symbols ------------------------------------------------

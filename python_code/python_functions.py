@@ -25,6 +25,7 @@ Created on Thu Aug 20 13:59:48 2020
 from Reinforcement_learner_class import *
 from random_player_class import *
 from ultimate_player import *
+from ultimate_random_player import *
 
 def get_ai_move(p_game, p_ai):
   field_number = p_ai.make_move(p_game.boxes, p_game, p_exploit = True)
@@ -32,6 +33,7 @@ def get_ai_move(p_game, p_ai):
   
 def get_ultimate_ai_move(p_game, p_ai):
   field_number = p_ai.make_move(p_game)
+  print(p_game.get_allowed_moves(p_ai.symbole))
   return field_number
 
 def make_move_on_game(p_field_number, p_symbole):
@@ -39,6 +41,10 @@ def make_move_on_game(p_field_number, p_symbole):
   
 def make_move_on_ultimate_game(p_field_number1, p_field_number2, p_symbole):
   game.move((int(p_field_number1),int(p_field_number2)), str(p_symbole))
+  print(game.next_sub_game)
+  
+def create_ultimate_random_player(p_symbole):
+  return ultimate_random_player(p_symbole)
   
 def train_ai(p_symbole, p_number_games):
   

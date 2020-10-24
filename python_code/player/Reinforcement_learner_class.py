@@ -33,7 +33,6 @@ class reinforcement_learner(player_class_interface):
       else:
             value_allowed = self.value_function[allowed_moves]
             idx_best = [idx for idx in range(len(value_allowed)) if value_allowed[idx] == max(value_allowed)]
-            #idx_best = self.value_function[allowed_moves].tolist().index(max(self.value_function[allowed_moves]))
             if(len(idx_best) > 1):
                 idx_best = np.random.choice(idx_best)
             action = allowed_moves[idx_best]

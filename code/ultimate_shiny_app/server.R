@@ -40,7 +40,7 @@ shinyServer(function(input, output, session) {
     if(input$circle & chosen.symbole == 'empty'){
       assign('chosen.symbole', 'circle', myenv)
       #assign('ai_player', train_ultimate_ai('cross', number_training_games), myenv)
-      assign('ai_player', create_ultimate_random_player('cross'), myenv)
+      assign('ai_player', create_ultimate_learner('cross'), myenv)
       output$board <- renderPlot({
         
         field.number <- get_ultimate_ai_move(game, ai_player)
@@ -56,7 +56,7 @@ shinyServer(function(input, output, session) {
   observeEvent(input$cross,{
     if(input$cross & chosen.symbole == 'empty'){
       #assign('ai_player', train_ultimate_ai('circle', number_training_games), myenv)
-      assign('ai_player', create_ultimate_random_player('circle'), myenv)
+      assign('ai_player', create_ultimate_learner('circle'), myenv)
       assign('chosen.symbole', 'cross', myenv)
     }
   })

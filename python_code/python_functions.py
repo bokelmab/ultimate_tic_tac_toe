@@ -46,6 +46,9 @@ def make_move_on_ultimate_game(p_field_number1, p_field_number2, p_symbole):
 def create_ultimate_random_player(p_symbole):
   return ultimate_random_player(p_symbole)
   
+def create_ultimate_learner(p_symbole):
+  return ultimate_learner(p_symbole)
+  
 def train_ai(p_symbole, p_number_games):
   
   print('Start training of ai player')

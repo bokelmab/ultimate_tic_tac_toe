@@ -10,6 +10,7 @@ from player_class import *
 from Reinforcement_learner_class import *
 from reinforcement_inherit1_class import *
 from random_player_class import *
+from ultimate_learner import *
 
 game = ultimate_tic_tac_toe()
 

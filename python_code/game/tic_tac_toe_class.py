@@ -10,7 +10,7 @@ import copy
 
 class tic_tac_toe:
     
-    score = np.array([0,0]) 
+    #score = np.array([0,0]) 
     
     def __init__(self):
         self.winner = 'tie'
@@ -19,7 +19,6 @@ class tic_tac_toe:
         
     def check_row(self, p_idx):
         pass
-        
             
     def check_winner(self):
             row_idx = [(0,1,2),(3,4,5),(6,7,8),(1,4,7),(2,5,8),(0,4,8),(2,4,6),(0,3,6)]
@@ -27,17 +26,6 @@ class tic_tac_toe:
             while (self.winner == 'tie' and i_row < len(row_idx)):
                 self.winner = self.check_row(row_idx[i_row])
                 i_row += 1
-                
-            if(self.winner == 'cross'):
-                self.finished = True
-                tic_tac_toe.score += np.array([1, 0])
-                
-            if(self.winner == 'circle'):
-                self.finished = True
-                tic_tac_toe.score += np.array([0, 1])
-                
-            # if(len([b for b in self.boxes if b == 10]) == 0):
-            #          self.finished = True
                 
     def move(self, p_box :int, p_symbole :str):
         pass

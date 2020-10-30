@@ -12,6 +12,8 @@ from tic_tac_toe_class import *
 
 class simple_tic_tac_toe(tic_tac_toe): 
     
+    score = np.array([0,0]) ## define own score to have a variable independent of sub games
+    
     def __init__(self):
         super().__init__()
         self.boxes = np.ones((9,), dtype=int) * 10
@@ -47,6 +49,15 @@ class simple_tic_tac_toe(tic_tac_toe):
     def check_full(self):
         if(len([b for b in self.boxes if b == 10]) == 0):
             self.finished = True
+            
+    def update_score(self):
+        if(self.winner == 'cross'):
+            self.finished = True
+            simple_tic_tac_toe.score += np.array([1, 0])
+                
+        if(self.winner == 'circle'):
+            self.finished = True
+            simple_tic_tac_toe.score += np.array([0, 1])
                       
     def move(self, p_box, p_symbole):
         if(self.finished):
@@ -68,6 +79,7 @@ class simple_tic_tac_toe(tic_tac_toe):
         self.unallowed_move = False        
         self.check_winner()
         self.check_full()
+        self.update_score()
                 
             
     @staticmethod
@@ -91,7 +103,7 @@ class simple_tic_tac_toe(tic_tac_toe):
         for i_box in range(0, len(p_boxes)):
             result = result + p_boxes[i_box] * pow(3, i_box) 
         
-        return(result+1)
+        return(result+1) ## generates R index
     
     @staticmethod
     def number2boxes(p_number):

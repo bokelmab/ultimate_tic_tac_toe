@@ -11,7 +11,7 @@ from termcolor import colored
 
 class ultimate_tic_tac_toe(tic_tac_toe):
     
-    score = np.array([0,0])
+    score = np.array([0,0]) ## define own score to have a variable independent of sub games
     
     def __init__(self):
         super().__init__()
@@ -34,7 +34,17 @@ class ultimate_tic_tac_toe(tic_tac_toe):
         for i_sub_game in range(0,len(self.boxes)):
             if(self.boxes[i_sub_game].finished == False):
                 return False
-        return True
+        #return True
+        self.finished = True
+        
+    def update_score(self):
+        if(self.winner == 'cross'):
+            self.finished = True
+            ultimate_tic_tac_toe.score += np.array([1, 0])
+                
+        if(self.winner == 'circle'):
+            self.finished = True
+            ultimate_tic_tac_toe.score += np.array([0, 1])
             
         
     def move(self, p_box_tuple, p_symbole):
@@ -61,15 +71,12 @@ class ultimate_tic_tac_toe(tic_tac_toe):
             self.unallowed_move = False
             if(self.boxes[p_box_tuple[1]].finished == False):
                 self.next_sub_game = p_box_tuple[1]
-                print('## next sub game ##')
             else:
                 self.next_sub_game = -1
-                print('####### -1 ########')
-                
-            
                 
         self.check_winner()
         self.check_full()
+        self.update_score()
         
         
     def print_boxes(self):
@@ -154,6 +161,10 @@ class ultimate_tic_tac_toe(tic_tac_toe):
         idx_box_change = [idx for idx in range(0, len(diff_boxes)) if diff_boxes[idx]  != 0]
         
         return (idx_sub_game_change, idx_box_change[0])
+    
+    @staticmethod
+    def reset_score():
+        ultimate_tic_tac_toe.score = np.array([0,0]) 
             
             
                 

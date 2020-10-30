@@ -18,18 +18,11 @@ class ultimate_learner():
         self.states = []  # record all positions taken
         self.lr = 0.2
         self.exp_rate = exp_rate
-        self.decay_gamma = 0.9
+        self.decay_gamma = 0.95
         self.states_value = {}  # state -> value
         self.symbole = p_symbole
-        self.value_function = {'2_1_1_1_1_1_1_1_1_':99} 
+        self.value_function = {} 
         
-  
-    def update_value_function(self, p_reward):
-        
-        for st in reversed(self.states):
-            self.value_function[st] += self.lr * (self.decay_gamma * p_reward - self.value_function[st])
-            p_reward = self.value_function[st]
-        self.states = []
         
     def set_exp_rate(self, p_exp_rate):
         self.exp_rate = p_exp_rate
@@ -55,6 +48,7 @@ class ultimate_learner():
         if np.random.uniform(0, 1) <= self.exp_rate:
             # take random action
             list_rep_move = random.choice(allowed_moves)
+            best_move = self.list_rep2string(list_rep_move)
         else:
             ## assign value to any allowed move
             values_allowed_moves = {}
@@ -63,16 +57,30 @@ class ultimate_learner():
                 if(string_allowed_move in self.value_function.keys()):
                     new_value = self.value_function[string_allowed_move]
                 else:
-                    new_value = 1/2
+                    new_value = 0
                 values_allowed_moves.update({string_allowed_move:new_value})
-            
-            
+        
             max_value = max(values_allowed_moves.values())  # maximum value
             best_move = [k for k, v in values_allowed_moves.items() if v == max_value]
-            #idx_best = [idx for idx in range(len(value_allowed)) if value_allowed[idx] == max(value_allowed)]
+            
             if(len(best_move) > 1):
-                list_rep_move = self.string2list_rep(np.random.choice(best_move))
+                best_move = np.random.choice(best_move)
             else:
-                list_rep_move = self.string2list_rep(best_move[0])
+                best_move = best_move[0]
+                  
+        self.states.append(best_move) ## add new state
+            
+        ## append unknown move to value function
+        if((best_move in self.value_function.keys()) == False):
+            self.value_function.update({best_move:0})
+                
+        list_rep_move = self.string2list_rep(best_move)
                 
         return(p_game.list2box(list_rep_move))
+    
+    def update_value_function(self, p_reward):
+        
+        for st in reversed(self.states):
+            self.value_function[st] += self.lr * (self.decay_gamma * p_reward - self.value_function[st])
+            p_reward = self.value_function[st]
+        self.states = []
